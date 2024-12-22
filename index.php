@@ -1,0 +1,258 @@
+<?php
+namespace Phppot;
+
+use Phppot\DataSource;
+require_once __DIR__ . '/lib/UserModel.php';
+$userModel = new UserModel();
+if (isset($_POST["import"])) {
+    $response = $userModel->readUserRecords();
+}
+?>
+<html>
+
+<head>
+    <link href="style.css?<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+    <script type="text/javascript">
+    function validateFile() {
+        var csvInputFile = document.forms["frmCSVImport"]["file"].value;
+        if (csvInputFile == "") {
+            documemt.getElementById("response").innerHTML = "No source found to import";
+            return false;
+        }
+        return true;
+    }
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h2>Import CSV file into Mysql using PHP</h2>
+                <div class="row">
+                    <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
+                        enctype="multipart/form-data" onsubmit="return validateFile()">
+                        <div Class="input-row">
+                            <label>Choose your file. <a href="./import-template.csv" download>Download
+                                    template</a></label><input type="file" name="file" id="file" class="file"
+                                accept=".csv,.xls,.xlsx">
+                            <div class="import">
+                                <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-sm-12" style="padding-bottom:20px;">
+                        <div class="btn-group float-right">
+
+                            <a class="btn btn-primary btn-sm" type="button" href="#" data-toggle="tooltip"
+                                id="export_all" title="Export All"><i class="icon-add"></i>
+                                Export All </a>
+
+                            <a class="btn btn-danger btn-sm" type="button" href="#" data-toggle="tooltip"
+                                title="Export Visible" id="export_visible"><i class="icon-trash"></i> Export Visible</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="outer-scontainer">
+        <div class="container-fluid">
+            <div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
+                <?php if(!empty($response["message"])) { echo $response["message"]; } ?>
+            </div><?php  require_once __DIR__ . '/list.php';?>
+        </div>
+    </main>
+    <footer>
+        <div>
+            FOOTER
+        </div>
+    </footer>
+
+
+    <!-- 
+
+    <div class="container">
+		<h2>Import CSV file into Mysql using PHP</h2>
+		<div class="outer-scontainer">
+			<div class="row">
+				<form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
+					enctype="multipart/form-data" onsubmit="return validateFile()">
+					<div Class="input-row">
+						<label>Choose your file. <a href="./import-template.csv" download>Download
+								template</a></label><input type="file" name="file" id="file" class="file"
+							accept=".csv,.xls,.xlsx">
+						<div class="import">
+							<button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="row clearfix">
+				<div class="col-sm-12" style="padding-bottom:20px;">
+					<div class="btn-group float-right">
+
+						<a class="btn btn-primary btn-sm" type="button" href="#" data-toggle="tooltip" id="export_all" title="Export All"><i class="icon-add"></i>
+							Export All </a> 
+
+						<a class="btn btn-danger btn-sm" type="button" href="#" data-toggle="tooltip" title="Export Visible" id="export_visible"><i class="icon-trash"></i> Export Visible</a>
+					</div>
+				</div>
+			</div>
+			<div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
+				<?php if(!empty($response["message"])) { echo $response["message"]; } ?>
+			</div><?php  require_once __DIR__ . '/list.php';?>
+		</div>
+	</div> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.dataTables.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+    function table2csv(oTable, exportmode, tableElm) {
+        var csv = '';
+        var headers = [];
+        var rows = [];
+
+        // Get header names
+        $(tableElm + ' thead').find('th').each(function() {
+            var $th = $(this);
+            var text = $th.text();
+            var header = '"' + text + '"';
+            // headers.push(header); // original code
+            if (text != "") headers.push(
+                header
+            ); // actually datatables seems to copy my original headers so there ist an amount of TH cells which are empty
+        });
+        csv += headers.join(',') + "\n";
+
+        // get table data
+        if (exportmode == "full") { // total data
+            var total = oTable.fnSettings().fnRecordsTotal()
+            for (i = 0; i < total; i++) {
+                var row = oTable.fnGetData(i);
+                row = strip_tags(row);
+                rows.push(row);
+            }
+        } else { // visible rows only
+            $(tableElm + ' tbody tr:visible').each(function(index) {
+                var row = oTable.fnGetData(this);
+                row = strip_tags(row);
+                rows.push(row);
+            })
+        }
+        csv += rows.join("\n");
+
+        // if a csv div is already open, delete it
+        if ($('.csv-data').length) $('.csv-data').remove();
+        // open a div with a download link
+        $('body').append('' + csv + '');
+
+    }
+
+    function strip_tags(html) {
+        var tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText;
+    }
+
+
+    $(document).ready(function() {
+        var asInitVals = new Array();
+        var oTable = $('table.display').dataTable({
+			dom: '<"top"l>Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                },
+                'print'
+            ]
+		});
+        /* $('#userTable').DataTable({
+            layout: {
+                topStart: {
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }
+            }
+        }); */
+
+        // exporta apenas o que está visível agora (filtros e paginação aplicada)
+        $('#export_visible').click(function(event) {
+            event.preventDefault();
+            table2csv(oTable, 'visible', 'table.display');
+        })
+
+        // exportar todos os dados da tabela
+        $('#export_all').click(function(event) {
+            event.preventDefault();
+            table2csv(oTable, 'full', 'table.display');
+        })
+
+    });
+
+    /* $(document).ready(function() {
+
+
+        var table = $('#userTable').DataTable({
+            dom: '<"top"l>Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                },
+                'print'
+            ]
+        });
+    }); */
+    </script>
+</body>
+
+</html>
