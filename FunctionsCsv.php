@@ -257,8 +257,12 @@ function parse_csv_to_array($path){
 
                 $arrValores = [];
                 $arrCampos = [];
+
+                $cont_cols = 0;
                 
                 foreach($data as $coluna) {
+                    $cont_cols++;
+
                     if ($coluna != "") {      
                         if ($linhas == 1) {
                             array_push($arrCampos,$coluna);
@@ -267,6 +271,11 @@ function parse_csv_to_array($path){
                             array_push($arrValores,$coluna);
                         }                             
                         //echo $coluna . "<br>";
+                    }
+                    else {
+                        if($cont_cols>1 && $linhas != 1) {
+                            array_push($arrValores,$coluna);
+                        }
                     }
                 }
                 if ($linhas == 1) {
