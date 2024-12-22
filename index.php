@@ -1,13 +1,3 @@
-<?php
-namespace Phppot;
-
-use Phppot\DataSource;
-require_once __DIR__ . '/lib/UserModel.php';
-$userModel = new UserModel();
-if (isset($_POST["import"])) {
-    $response = $userModel->readUserRecords();
-}
-?>
 <html>
 
 <head>
@@ -23,16 +13,7 @@ if (isset($_POST["import"])) {
 
 
 
-    <script type="text/javascript">
-    function validateFile() {
-        var csvInputFile = document.forms["frmCSVImport"]["file"].value;
-        if (csvInputFile == "") {
-            documemt.getElementById("response").innerHTML = "No source found to import";
-            return false;
-        }
-        return true;
-    }
-    </script>
+
 </head>
 
 <body>
@@ -41,18 +22,45 @@ if (isset($_POST["import"])) {
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h2>Import CSV file into Mysql using PHP</h2>
-                <div class="row">
-                    <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
-                        enctype="multipart/form-data" onsubmit="return validateFile()">
-                        <div Class="input-row">
-                            <label>Choose your file. <a href="./import-template.csv" download>Download
-                                    template</a></label><input type="file" name="file" id="file" class="file"
-                                accept=".csv,.xls,.xlsx">
-                            <div class="import">
-                                <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+                <div class="row clearfix">
+                    <div class="col-sm-12" style="padding:20px;">
+                        <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport"
+                            enctype="multipart/form-data" onsubmit="return validateFile()">
+                            <div Class="input-row">
+                                <label>Choose your file. <a href="./import-template.csv" download>Download
+                                        template</a></label><input type="file" name="file" id="file" class="file"
+                                    accept=".csv,.xls,.xlsx">
+                                <div class="import">
+                                    <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            Selecione uma função:
+                            <div class="input-row">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadioInline1" name="customRadioInline"
+                                        class="custom-control-input" value="table">
+                                    <label class="custom-control-label" for="customRadioInline1">Table</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadioInline2" name="customRadioInline"
+                                        class="custom-control-input" value="parse">
+                                    <label class="custom-control-label" for="customRadioInline2">Parse</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadioInline3" name="customRadioInline"
+                                        class="custom-control-input" value="array">
+                                    <label class="custom-control-label" for="customRadioInline3">Array</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="customRadioInline4" name="customRadioInline"
+                                        class="custom-control-input" value="write">
+                                    <label class="custom-control-label" for="customRadioInline4">Write</label>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
                 </div>
                 <div class="row clearfix">
                     <div class="col-sm-12" style="padding-bottom:20px;">
@@ -70,18 +78,108 @@ if (isset($_POST["import"])) {
             </div>
         </div>
     </header>
-    <main class="outer-scontainer">
+    <main>
+
+
         <div class="container-fluid">
-            <div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
-                <?php if(!empty($response["message"])) { echo $response["message"]; } ?>
-            </div><?php  require_once __DIR__ . '/list.php';?>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Resultado</h5>
+
+
+                    <?php
+
+            include "FunctionsCsv.php";
+            
+            if(isset($_GET['file']) || isset($_POST["import"])){
+
+                if(isset($_FILES["file"]["name"])) {
+                    $file = $_FILES["file"]["name"];                    
+                }
+                else {
+                    $file = $_GET['file'];
+                }
+                
+                $tabela_split = explode(".",$file);
+                $tabela_nome = "tbl_".$tabela_split[0];
+                echo "<input type='hidden' name='tabela_nome' id='tabela_nome' value='$tabela_nome'>";
+                echo '<p class="card-text">Arquivo: '.$file."</p>";
+                
+                if(isset($_POST['customRadioInline']) && $_POST['customRadioInline'] != ''){
+                    $funcao = $_POST['customRadioInline'];
+                    switch ($funcao) {
+                        case "table":
+                            datatable_from_read_csv($file);
+                            break;
+                            
+                        case "parse":
+                            parse_csv_rows($file);
+                            break;
+                    
+                        case "array":
+                            read_csv_data($file);
+                            break;
+
+                        case "write":
+                            read_csv_data_write($file);
+                            break;
+
+                        default:
+                            parse_csv_to_array($file);
+                            break;
+                    }
+                }
+                else if(isset($_GET['function']) && $_GET['function'] != '')  {
+                    $funcao =  $_GET['function'];
+                    switch ($funcao) {
+                        case "table":
+                            datatable_from_read_csv($file);
+                            break;
+                            
+                        case "parse":
+                            parse_csv_rows($file);
+                            break;
+                    
+                        case "array":
+                            read_csv_data($file);
+                            break;
+
+                        case "write":
+                            read_csv_data_write($file);
+                            break;
+
+                        default:
+                            parse_csv_to_array($file);
+                            break;
+                    }
+
+                }
+                else {
+                    read_csv_data($file);
+
+                }
+            }
+            else {
+                $footer = "Variável file= NÃO CONFIGURADA! ";
+            }
+
+            ?>
+
+                </div>
+                <div class="card-footer">
+                    <?php if(isset($footer)) echo $footer; ?>
+                </div>
+            </div>
+
         </div>
     </main>
     <footer>
-        <div>
-            FOOTER
+        <div style="text-align:center;">
+            ...
         </div>
     </footer>
+
+
 
 
     <!-- 
@@ -113,9 +211,9 @@ if (isset($_POST["import"])) {
 					</div>
 				</div>
 			</div>
-			<div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
-				<?php if(!empty($response["message"])) { echo $response["message"]; } ?>
-			</div><?php  require_once __DIR__ . '/list.php';?>
+			<div id="response" class="<?php //if(!empty($response["type"])) { echo $response["type"] ; } ?>">
+				<?php //if(!empty($response["message"])) { echo $response["message"]; } ?>
+			</div><?php  //require_once __DIR__ . '/list.php';?>
 		</div>
 	</div> -->
 
@@ -138,7 +236,26 @@ if (isset($_POST["import"])) {
 
 
 
+    <script>
+    $(document).ready(function() {
+        var tabela_nome = "#" + $("#tabela_nome").val();
 
+        var tabela_parse = $(tabela_nome).dataTable({
+            dom: '<"top"l>Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                },
+                'print'
+            ]
+        });
+    });
+    </script>
 
 
 
@@ -199,7 +316,7 @@ if (isset($_POST["import"])) {
     $(document).ready(function() {
         var asInitVals = new Array();
         var oTable = $('table.display').dataTable({
-			dom: '<"top"l>Bfrtip',
+            dom: '<"top"l>Bfrtip',
             buttons: [
                 'copy',
                 'csv',
@@ -211,7 +328,7 @@ if (isset($_POST["import"])) {
                 },
                 'print'
             ]
-		});
+        });
         /* $('#userTable').DataTable({
             layout: {
                 topStart: {
@@ -233,25 +350,6 @@ if (isset($_POST["import"])) {
         })
 
     });
-
-    /* $(document).ready(function() {
-
-
-        var table = $('#userTable').DataTable({
-            dom: '<"top"l>Bfrtip',
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                {
-                    extend: 'pdf',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL'
-                },
-                'print'
-            ]
-        });
-    }); */
     </script>
 </body>
 

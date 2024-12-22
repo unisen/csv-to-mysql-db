@@ -1,3 +1,13 @@
+<?php
+namespace Phppot;
+
+use Phppot\DataSource;
+require_once __DIR__ . '/lib/UserModel.php';
+$userModel = new UserModel();
+if (isset($_POST["import"])) {
+    $response = $userModel->readUserRecords();
+}
+?>
 <html>
 
 <head>
@@ -13,7 +23,16 @@
 
 
 
-
+    <script type="text/javascript">
+    function validateFile() {
+        var csvInputFile = document.forms["frmCSVImport"]["file"].value;
+        if (csvInputFile == "") {
+            documemt.getElementById("response").innerHTML = "No source found to import";
+            return false;
+        }
+        return true;
+    }
+    </script>
 </head>
 
 <body>
@@ -52,66 +71,17 @@
         </div>
     </header>
     <main class="outer-scontainer">
-
-
         <div class="container-fluid">
-            <?php
-
-            include "FunctionsCsv.php";
-
-            
-            
-            if(isset($_GET['file'])){
-                $file = $_GET['file'];
-
-                if(isset($_GET['function']) && $_GET['function'] != '') {
-
-                    $funcao =  $_GET['function'];
-
-                    $tabela_split = explode(".",$file);
-                    $tabela_nome = "tbl_".$tabela_split[0];
-                    echo "<input type='hidden' name='tabela_nome' id='tabela_nome' value='$tabela_nome'>";
-
-                    switch ($funcao) {
-                        case "table":
-                            datatable_from_read_csv($file);
-                            break;
-                            
-                        case "parse":
-                            parse_csv_rows($file);
-                            break;
-                    
-                        case "array":
-                            read_csv_data($file);
-                            break;
-
-                        case "write":
-                            read_csv_data_write($file);
-                            break;
-
-                        default:
-                            parse_csv_to_array($file);
-                            break;
-                    }
-                }
-                else{
-                    read_csv_data($file);
-                }
-            }
-            else {
-                $footer = "Variável file= NÃO CONFIGURADA! ";
-            }
-
-            ?>
+            <div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
+                <?php if(!empty($response["message"])) { echo $response["message"]; } ?>
+            </div><?php  require_once __DIR__ . '/list.php';?>
         </div>
     </main>
     <footer>
         <div>
-            <?php if(isset($footer)) echo $footer; ?>
+            FOOTER
         </div>
     </footer>
-
-
 
 
     <!-- 
@@ -143,9 +113,9 @@
 					</div>
 				</div>
 			</div>
-			<div id="response" class="<?php //if(!empty($response["type"])) { echo $response["type"] ; } ?>">
-				<?php //if(!empty($response["message"])) { echo $response["message"]; } ?>
-			</div><?php  //require_once __DIR__ . '/list.php';?>
+			<div id="response" class="<?php if(!empty($response["type"])) { echo $response["type"] ; } ?>">
+				<?php if(!empty($response["message"])) { echo $response["message"]; } ?>
+			</div><?php  require_once __DIR__ . '/list.php';?>
 		</div>
 	</div> -->
 
@@ -168,26 +138,7 @@
 
 
 
-    <script>
-    $(document).ready(function() {
-        var tabela_nome = "#" + $("#tabela_nome").val();
 
-        var tabela_parse = $(tabela_nome).dataTable({
-            dom: '<"top"l>Bfrtip',
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                {
-                    extend: 'pdf',
-                    orientation: 'landscape',
-                    pageSize: 'LEGAL'
-                },
-                'print'
-            ]
-        });
-    });
-    </script>
 
 
 
@@ -248,7 +199,7 @@
     $(document).ready(function() {
         var asInitVals = new Array();
         var oTable = $('table.display').dataTable({
-            dom: '<"top"l>Bfrtip',
+			dom: '<"top"l>Bfrtip',
             buttons: [
                 'copy',
                 'csv',
@@ -260,7 +211,7 @@
                 },
                 'print'
             ]
-        });
+		});
         /* $('#userTable').DataTable({
             layout: {
                 topStart: {
@@ -282,6 +233,25 @@
         })
 
     });
+
+    /* $(document).ready(function() {
+
+
+        var table = $('#userTable').DataTable({
+            dom: '<"top"l>Bfrtip',
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+                },
+                'print'
+            ]
+        });
+    }); */
     </script>
 </body>
 
