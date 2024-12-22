@@ -2,19 +2,21 @@
 
 function read_csv_data($file) {
 
-    echo "Lendo arquivo: $file <hr>";
+    echo "<p><b>Array</b></p>Lendo arquivo: $file <hr>";
 
 
     if (($open = fopen($file, "r")) !== false) {
         $linhas = 0;
         $arrCampos = [];
-        $arrValores = [];
+       
         $arrRows = [];
         
         while (($data = fgetcsv($open, 10000, ",")) !== false) {
             $array[] = $data;
-            //echo print_r($data) . "<br><br>";
+            echo print_r($data) . "<br><br>";
             $linhas++;
+
+            $arrValores = [];
             
             foreach($data as $coluna) {
                 if ($coluna != "") {      
@@ -28,6 +30,7 @@ function read_csv_data($file) {
                 }
             }
             if ($linhas == 1) {
+                
                 $arrRows[] = $arrCampos;
             }
             else {
@@ -58,7 +61,13 @@ function parse_csv_rows($path){
     $handle = fopen($path, "r");
     while (($row = fgetcsv($handle)) !== false) {
         //$linha = array_shift($row);
-        $rows[] = array_slice($row, 1);
+        //$rows[] = array_slice($row, 1);
+        if($row[0] == "") {
+            $rows[] = array_slice($row, 1);
+        }
+        else {
+            $rows[] = $row;
+        }
         //print_r($row[0]);
         //exit();
     }
@@ -70,7 +79,7 @@ function parse_csv_rows($path){
     foreach ($rows as $row) {
         $array[] = array_combine($headers, $row);
     }
-    echo "<b>Headers</b><hr>";
+    echo "<b>Parse Rows:</b><hr>";
     echo "<table id='$tabela_nome'><thead><tr>";
     
     foreach($headers as $item) {
@@ -147,6 +156,7 @@ function datatable_from_read_csv($path){
 }
 
 function parse_csv_to_array($path){
+    
     $arrayRows = [];
     // Parse the rows
     $rows = [];
@@ -157,7 +167,13 @@ function parse_csv_to_array($path){
     $handle = fopen($path, "r");
     while (($row = fgetcsv($handle)) !== false) {
         //$linha = array_shift($row);
-        $rows[] = array_slice($row, 1);
+        //$rows[] = array_slice($row, 1);
+        if($row[0] == "") {
+            $rows[] = array_slice($row, 1);
+        }
+        else {
+            $rows[] = $row;
+        }
         //print_r($row[0]);
         //exit();
     }
@@ -169,7 +185,7 @@ function parse_csv_to_array($path){
     foreach ($rows as $row) {
         $array[] = array_combine($headers, $row);
     }
-    echo "<b>Headers</b><hr>";
+    echo "<b>Parse Array</b><hr>";
     echo "<table id='$tabela_nome'><thead><tr>";
 
     $arrayRows[] = $headers;
@@ -224,21 +240,23 @@ function parse_csv_to_array($path){
 
     function read_csv_data_write($file) {
 
-        echo "Lendo arquivo: $file <hr>";
+        echo "Lendo arquivo: $file <br>";
+        echo "<b>Criando arquivo:</b> $file <hr>";
 
         $new_file = "new_".$file;
     
     
         if (($open = fopen($file, "r")) !== false) {
             $linhas = 0;
-            $arrCampos = [];
-            $arrValores = [];
             $arrRows = [];
             
             while (($data = fgetcsv($open, 10000, ",")) !== false) {
                 $array[] = $data;
                 //echo print_r($data) . "<br><br>";
                 $linhas++;
+
+                $arrValores = [];
+                $arrCampos = [];
                 
                 foreach($data as $coluna) {
                     if ($coluna != "") {      

@@ -82,7 +82,7 @@
                             break;
                     
                         case "array":
-                            parse_csv_to_array($file);
+                            read_csv_data($file);
                             break;
 
                         case "write":
@@ -90,7 +90,7 @@
                             break;
 
                         default:
-                            read_csv_data($file);
+                            parse_csv_to_array($file);
                             break;
                     }
                 }
