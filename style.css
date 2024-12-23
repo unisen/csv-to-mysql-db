@@ -5,6 +5,10 @@ body {
     margin: 60px auto;
 }
 
+.import {
+    text-align: right;
+}
+
 .heading {
     text-align: center;
 }
@@ -24,16 +28,16 @@ body {
 }
 
 .btn-submit {
-    background: #efefef;
+    background: #007247;
     border: #d3d3d3 1px solid;
-    width: 100%;
+    width: 50%;
     border-radius: 20px;
     cursor: pointer;
-    padding: 12px;
+    padding: 8px;
 }
 
 .btn-submit:hover {
-    background: #d9d8d8;
+    background: #b92500;
     border: #c3c1c1 1px solid;
 }
 
@@ -110,6 +114,55 @@ label {
     margin-bottom: 5px;
     display: inline-block;
     font-weight: normal;
+}
+
+.custom-radio input[type=radio] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: inherit;
+    /* Remove most all native input styles */
+    -moz-appearance: none;
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: #c10cee !important;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 50%;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+}
+
+.custom-radio input[type=radio]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+    /* Windows High Contrast Mode */
+    background-color: #c10cee;
+}
+
+.custom-radio input[type=radio]:checked::before {
+    transform: scale(1);
+}
+
+.custom-radio input[type=radio]:focus {
+    outline: max(2px, 0.15em) solid currentColor;
+    outline-offset: max(2px, 0.15em);
+    color: #c10cee !important;
+}
+
+@media (max-width: 600px) {
+    .import {
+        text-align: center;
+    }
 }
 
 

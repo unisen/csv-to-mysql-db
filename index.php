@@ -1,6 +1,8 @@
 <html>
 
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link href="style.css?<?php echo time(); ?>" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
@@ -30,39 +32,60 @@
                                 <label>Choose your file. <a href="./import-template.csv" download>Download
                                         template</a></label><input type="file" name="file" id="file" class="file"
                                     accept=".csv,.xls,.xlsx">
-                                <div class="import">
-                                    <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+
+                            </div>
+                            <div class="form-row">
+                                
+                                <div class="col-sm-9">
+                                    Selecione uma função:
+                                    <div class="input-row">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline1" name="customRadioInline"
+                                                class="custom-control-input" value="table">
+                                            <label class="custom-control-label" for="customRadioInline1">Table</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline2" name="customRadioInline"
+                                                class="custom-control-input" value="parse">
+                                            <label class="custom-control-label" for="customRadioInline2">Parse</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline3" name="customRadioInline"
+                                                class="custom-control-input" value="array">
+                                            <label class="custom-control-label" for="customRadioInline3">Array</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline4" name="customRadioInline"
+                                                class="custom-control-input" value="write">
+                                            <label class="custom-control-label" for="customRadioInline4">Write</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline5" name="customRadioInline"
+                                                class="custom-control-input" value="import">
+                                            <label class="custom-control-label" for="customRadioInline5">Import SQL</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline6" name="customRadioInline"
+                                                class="custom-control-input" value="template">
+                                            <label class="custom-control-label" for="customRadioInline6">Create Template</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="import">
+                                        <button type="submit" id="submit" name="import"
+                                            class="btn-submit text-white">Executar</button>
+                                    </div>
                                 </div>
                             </div>
-                            Selecione uma função:
-                            <div class="input-row">
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline1" name="customRadioInline"
-                                        class="custom-control-input" value="table">
-                                    <label class="custom-control-label" for="customRadioInline1">Table</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline2" name="customRadioInline"
-                                        class="custom-control-input" value="parse">
-                                    <label class="custom-control-label" for="customRadioInline2">Parse</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline3" name="customRadioInline"
-                                        class="custom-control-input" value="array">
-                                    <label class="custom-control-label" for="customRadioInline3">Array</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="customRadioInline4" name="customRadioInline"
-                                        class="custom-control-input" value="write">
-                                    <label class="custom-control-label" for="customRadioInline4">Write</label>
-                                </div>
-                            </div>
+
 
                         </form>
                     </div>
 
                 </div>
-                <div class="row clearfix">
+                <!-- <div class="row clearfix">
                     <div class="col-sm-12" style="padding-bottom:20px;">
                         <div class="btn-group float-right">
 
@@ -74,7 +97,7 @@
                                 title="Export Visible" id="export_visible"><i class="icon-trash"></i> Export Visible</a>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </header>
