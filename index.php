@@ -275,7 +275,14 @@
                     pageSize: 'LEGAL'
                 },
                 'print'
-            ]
+            ],
+            'paging': true,
+            'lengthMenu': [
+                [10, 25, 50, 100, 100000],
+                [10, 25, 50, 100, "All"]
+            ],
+            'pagingType': 'full_numbers',
+            "pageLength": 25
         });
     });
     </script>
@@ -350,7 +357,14 @@
                     pageSize: 'LEGAL'
                 },
                 'print'
-            ]
+            ],
+            'paging': true,
+            'lengthMenu': [
+                [10, 25, 50, 100, 100000],
+                [10, 25, 50, 100, "All"]
+            ],
+            'pagingType': 'full_numbers',
+            "pageLength": 25
         });
         /* $('#userTable').DataTable({
             layout: {
